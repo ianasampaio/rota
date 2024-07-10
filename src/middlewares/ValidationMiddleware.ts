@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { check, body } from "express-validator";
 
 export const validateUser = [
   body("name")
@@ -33,4 +33,20 @@ export const validateProduct = [
 export const validateProductToUpdate = [
   body("name").optional().isString().trim().escape(),
   body("price").optional().isDecimal(),
+];
+
+export const validateClient = [
+  body("name")
+    .notEmpty()
+    .withMessage("Name must be provided")
+    .isString()
+    .withMessage("Name must be a string"),
+  body("adress")
+    .notEmpty()
+    .withMessage("Name must be provided")
+    .isString()
+    .withMessage("Name must be a string"),
+  body("contact")
+    .matches(/^\d{10,11}$/)
+    .withMessage("Invalid contact format"),
 ];
