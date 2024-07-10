@@ -34,8 +34,8 @@ model Client {
   name      String
   adress    String
   contact   String
-  createdAt DateTime @map("created_at")
-  updatedAt DateTime @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
   sales     Sale[]
 
   @@map("clients")

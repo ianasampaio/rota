@@ -34,3 +34,19 @@ export const validateProductToUpdate = [
   body("name").optional().isString().trim().escape(),
   body("price").optional().isDecimal(),
 ];
+
+export const validateClient = [
+  body("name")
+    .notEmpty()
+    .withMessage("Name must be provided")
+    .isString()
+    .withMessage("Name must be a string"),
+  body("adress")
+    .notEmpty()
+    .withMessage("Name must be provided")
+    .isString()
+    .withMessage("Name must be a string"),
+  body("contact")
+    .matches(/^\d{10,11}$/)
+    .withMessage("Invalid contact format"),
+];
