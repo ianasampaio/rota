@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid()) @db.Uuid
+  email    String @unique
+  name     String
+  password String
+  sales    Sale[]
+
+  @@map("users")
+}
+
+model Product {
+  id               String            @id @default(uuid()) @db.Uuid
+  name             String
+  price            Float
+  createdAt        DateTime          @map("created_at")
+  updatedAt        DateTime          @map("updated_at")
+  shipmentProducts ShipmentProduct[]
+  saleProducts     SaleProduct[]
+
+  @@map("products")
+}
+
+model Client {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  adress    String
+  contact   String
+  createdAt DateTime @map("created_at")
+  updatedAt DateTime @map("updated_at")
+  sales     Sale[]
+
+  @@map("clients")
+}
+
+model Shipment {
+  id               String            @id @default(uuid()) @db.Uuid
+  location         String
+  createdAt        DateTime          @map("created_at")
+  updatedAt        DateTime          @map("updated_at")
+  shipmentProducts ShipmentProduct[]
+  sales            Sale[]
+  saleProducts     SaleProduct[]
+
+  @@map("shipments")
+}
+
+model ShipmentProduct {
+  id         String   @id @default(uuid()) @db.Uuid
+  shipmentId String   @map("shipment_id") @db.Uuid
+  productId  String   @map("product_id") @db.Uuid
+  name       String
+  price      Float
+  status     String
+  createdAt  DateTime @map("created_at")
+  updatedAt  DateTime @map("updated_at")
+
+  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("shipment_products")
+}
+
+model Sale {
+  id         String   @id @default(uuid()) @db.Uuid
+  clientId   String   @map("client_id") @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  shipmentId String   @map("shipment_id") @db.Uuid
+  value      Float
+  status     String
+  createdAt  DateTime @map("created_at")
+  updatedAt  DateTime @map("updated_at")
+
+  client       Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shipment     Shipment      @relation(fields: [shipmentId], references: [id], onDelete: Cascade) //
+  saleProducts SaleProduct[]
+  Payments     Payments[]
+
+  @@map("sales")
+}
+
+model SaleProduct {
+  id         String   @id @default(uuid()) @db.Uuid
+  saleId     String   @map("sale_id") @db.Uuid
+  productId  String   @map("product_id") @db.Uuid
+  shipmentId String   @map("shipment_id") @db.Uuid
+  price      Float
+  createdAt  DateTime @map("created_at")
+  updatedAt  DateTime @map("updated_at")
+
+  sale     Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade) //
+
+  @@map("sale_products")
+}
+
+model Payments {
+  id        String   @id @default(uuid()) @db.Uuid
+  saleId    String   @map("sale_id") @db.Uuid
+  type      String
+  value     Float
+  createdAt DateTime @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
+  sale Sale @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
