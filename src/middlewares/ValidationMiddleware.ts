@@ -29,3 +29,8 @@ export const validateProduct = [
     .isDecimal()
     .withMessage("Price must be a decimal"),
 ];
+
+export const validateProductToUpdate = [
+  body("name").optional().isString().trim().escape(),
+  body("price").optional().isDecimal(),
+];
