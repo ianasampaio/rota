@@ -15,8 +15,6 @@ export async function createProduct(request: Request, response: Response) {
       data: {
         name,
         price,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     });
     response.status(201).json(product);
