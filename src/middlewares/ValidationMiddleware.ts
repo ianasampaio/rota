@@ -50,3 +50,12 @@ export const validateClient = [
     .matches(/^\d{10,11}$/)
     .withMessage("Invalid contact format"),
 ];
+
+export const validateClientToUpdate = [
+  body("name").optional().isString().trim().escape(),
+  body("adress").optional().isString().trim().escape(),
+  body("contact")
+    .optional()
+    .matches(/^\d{10,11}$/)
+    .withMessage("Invalid contact format"),
+];
