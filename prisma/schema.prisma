@@ -24,7 +24,7 @@ model Product {
   id               String            @id @default(uuid()) @db.Uuid
   userId           String            @map("user_id") @db.Uuid
   name             String
-  price            Float
+  value            Int
   createdAt        DateTime          @default(now()) @map("created_at")
   updatedAt        DateTime          @updatedAt @map("updated_at")
   shipmentProducts ShipmentProduct[]
@@ -72,7 +72,7 @@ model ShipmentProduct {
   shipmentId   String        @map("shipment_id") @db.Uuid
   productId    String        @map("product_id") @db.Uuid
   name         String
-  price        Float
+  value        Int
   status       String
   createdAt    DateTime      @map("created_at")
   updatedAt    DateTime      @map("updated_at")
@@ -89,7 +89,7 @@ model Sale {
   clientId     String        @map("client_id") @db.Uuid
   userId       String        @map("user_id") @db.Uuid
   shipmentId   String?       @map("shipment_id") @db.Uuid
-  value        Float
+  value        Int
   status       String
   createdAt    DateTime      @map("created_at")
   updatedAt    DateTime      @map("updated_at")
@@ -112,7 +112,7 @@ model SaleProduct {
   saleId            String   @map("sale_id") @db.Uuid
   productId         String   @map("product_id") @db.Uuid
   shipmentProductId String?  @map("shipment_product_id") @db.Uuid
-  price             Float
+  value             Int
   createdAt         DateTime @map("created_at")
   updatedAt         DateTime @map("updated_at")
 
@@ -127,7 +127,7 @@ model Payments {
   id        String   @id @default(uuid()) @db.Uuid
   saleId    String   @map("sale_id") @db.Uuid
   type      String
-  value     Float
+  value     Int
   createdAt DateTime @map("created_at")
   updatedAt DateTime @map("updated_at")
 
