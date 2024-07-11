@@ -13,9 +13,9 @@ model User {
   name      String
   password  String
   sales     Sale[]
-  Products  Product[]
-  Clients   Client[]
-  Shipments Shipment[]
+  products  Product[]
+  clients   Client[]
+  shipments Shipment[]
 
   @@map("users")
 }
@@ -32,7 +32,6 @@ model Product {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
   @@map("products")
 }
 
@@ -48,7 +47,6 @@ model Client {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
   @@map("clients")
 }
 
@@ -63,7 +61,6 @@ model Shipment {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
   @@map("shipments")
 }
 
@@ -81,7 +78,7 @@ model ShipmentProduct {
   status       ShipmentProductStatus
   createdAt    DateTime              @map("created_at")
   updatedAt    DateTime              @map("updated_at")
-  SaleProducts SaleProduct[]
+  saleProducts SaleProduct[]
 
   shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
   product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -105,15 +102,12 @@ model Sale {
   createdAt    DateTime      @map("created_at")
   updatedAt    DateTime      @map("updated_at")
   saleProducts SaleProduct[]
-  Payments     Payments[]
+  payments     Payments[]
 
   client   Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   shipment Shipment? @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
-  @@index([clientId])
-  @@index([shipmentId])
   @@index([status])
   @@map("sales")
 }
