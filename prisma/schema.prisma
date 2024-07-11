@@ -8,17 +8,21 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid()) @db.Uuid
-  email    String @unique
+  id       String     @id @default(uuid()) @db.Uuid
+  email    String     @unique
   name     String
   password String
   sales    Sale[]
+  Product  Product[]
+  Client   Client[]
+  Shipment Shipment[]
 
   @@map("users")
 }
 
 model Product {
   id               String            @id @default(uuid()) @db.Uuid
+  userId           String            @map("user_id") @db.Uuid
   name             String
   price            Float
   createdAt        DateTime          @default(now()) @map("created_at")
@@ -26,11 +30,15 @@ model Product {
   shipmentProducts ShipmentProduct[]
   saleProducts     SaleProduct[]
 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
   @@map("products")
 }
 
 model Client {
   id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
   name      String
   adress    String
   contact   String
@@ -38,11 +46,15 @@ model Client {
   updatedAt DateTime @updatedAt @map("updated_at")
   sales     Sale[]
 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
   @@map("clients")
 }
 
 model Shipment {
   id               String            @id @default(uuid()) @db.Uuid
+  userId           String            @map("user_id") @db.Uuid
   location         String
   createdAt        DateTime          @map("created_at")
   updatedAt        DateTime          @map("updated_at")
@@ -50,6 +62,9 @@ model Shipment {
   sales            Sale[]
   saleProducts     SaleProduct[]
 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
   @@map("shipments")
 }
 
@@ -85,6 +100,10 @@ model Sale {
   saleProducts SaleProduct[]
   Payments     Payments[]
 
+  @@index([userId])
+  @@index([clientId])
+  @@index([shipmentId])
+  @@index([status])
   @@map("sales")
 }
 
