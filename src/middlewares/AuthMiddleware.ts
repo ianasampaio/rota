@@ -24,13 +24,7 @@ export async function authenticate(
 
   const { id } = jwt.verify(token, accessToken) as JwtPayload;
 
-  const user = await prisma.user.findUnique({ where: { id } });
-
-  if (!user) {
-    return response.status(400).json({ error: "Not authorized" });
-  }
-
-  (request as any).user = { id: user.id };
+  (request as any).user = { id };
 
   next();
 }
