@@ -7,12 +7,17 @@ import {
   validateProductToUpdate,
 } from "../middlewares/ValidationMiddleware";
 import { updateProduct } from "../useCases/products/updateProduct";
+import { expressAdapter } from "../utils/express-adapter";
 
 const router = Router();
 
-router.get("/products", listProducts);
-router.get("/products/:id", getProduct);
-router.post("/products", validateProduct, createProduct);
-router.patch("/products/:id", validateProductToUpdate, updateProduct);
+router.get("/products", expressAdapter(listProducts));
+router.get("/products/:id", expressAdapter(getProduct));
+router.post("/products", validateProduct, expressAdapter(createProduct));
+router.patch(
+  "/products/:id",
+  validateProductToUpdate,
+  expressAdapter(updateProduct)
+);
 
 export default router;
