@@ -6,11 +6,12 @@ import {
   validateUser,
   validateLogin,
 } from "../middlewares/ValidationMiddleware";
+import { expressAdapter } from "../utils/express-adapter";
 
 const router = Router();
 
 router.get("/users", listUsers);
-router.post("/signup", validateUser, signup);
-router.post("/signin", validateLogin, signin);
+router.post("/signup", validateUser, expressAdapter(signup));
+router.post("/signin", validateLogin, expressAdapter(signin));
 
 export default router;
