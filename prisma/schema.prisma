@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id       String     @id @default(uuid()) @db.Uuid
-  email    String     @unique
-  name     String
-  password String
-  sales    Sale[]
-  Product  Product[]
-  Client   Client[]
-  Shipment Shipment[]
+  id        String     @id @default(uuid()) @db.Uuid
+  email     String     @unique
+  name      String
+  password  String
+  sales     Sale[]
+  Products  Product[]
+  Clients   Client[]
+  Shipments Shipment[]
 
   @@map("users")
 }
@@ -60,7 +60,6 @@ model Shipment {
   updatedAt        DateTime          @map("updated_at")
   shipmentProducts ShipmentProduct[]
   sales            Sale[]
-  saleProducts     SaleProduct[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -69,14 +68,15 @@ model Shipment {
 }
 
 model ShipmentProduct {
-  id         String   @id @default(uuid()) @db.Uuid
-  shipmentId String   @map("shipment_id") @db.Uuid
-  productId  String   @map("product_id") @db.Uuid
-  name       String
-  price      Float
-  status     String
-  createdAt  DateTime @map("created_at")
-  updatedAt  DateTime @map("updated_at")
+  id           String        @id @default(uuid()) @db.Uuid
+  shipmentId   String        @map("shipment_id") @db.Uuid
+  productId    String        @map("product_id") @db.Uuid
+  name         String
+  price        Float
+  status       String
+  createdAt    DateTime      @map("created_at")
+  updatedAt    DateTime      @map("updated_at")
+  SaleProducts SaleProduct[]
 
   shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
   product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -85,20 +85,20 @@ model ShipmentProduct {
 }
 
 model Sale {
-  id         String   @id @default(uuid()) @db.Uuid
-  clientId   String   @map("client_id") @db.Uuid
-  userId     String   @map("user_id") @db.Uuid
-  shipmentId String   @map("shipment_id") @db.Uuid
-  value      Float
-  status     String
-  createdAt  DateTime @map("created_at")
-  updatedAt  DateTime @map("updated_at")
-
-  client       Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  shipment     Shipment      @relation(fields: [shipmentId], references: [id], onDelete: Cascade) //
+  id           String        @id @default(uuid()) @db.Uuid
+  clientId     String        @map("client_id") @db.Uuid
+  userId       String        @map("user_id") @db.Uuid
+  shipmentId   String?       @map("shipment_id") @db.Uuid
+  value        Float
+  status       String
+  createdAt    DateTime      @map("created_at")
+  updatedAt    DateTime      @map("updated_at")
   saleProducts SaleProduct[]
   Payments     Payments[]
+
+  client   Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shipment Shipment? @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([clientId])
@@ -108,17 +108,17 @@ model Sale {
 }
 
 model SaleProduct {
-  id         String   @id @default(uuid()) @db.Uuid
-  saleId     String   @map("sale_id") @db.Uuid
-  productId  String   @map("product_id") @db.Uuid
-  shipmentId String   @map("shipment_id") @db.Uuid
-  price      Float
-  createdAt  DateTime @map("created_at")
-  updatedAt  DateTime @map("updated_at")
+  id                String   @id @default(uuid()) @db.Uuid
+  saleId            String   @map("sale_id") @db.Uuid
+  productId         String   @map("product_id") @db.Uuid
+  shipmentProductId String?  @map("shipment_product_id") @db.Uuid
+  price             Float
+  createdAt         DateTime @map("created_at")
+  updatedAt         DateTime @map("updated_at")
 
-  sale     Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade) //
+  sale            Sale             @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product         Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  shipmentProduct ShipmentProduct? @relation(fields: [shipmentProductId], references: [id], onDelete: Cascade)
 
   @@map("sale_products")
 }
