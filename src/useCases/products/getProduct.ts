@@ -1,6 +1,6 @@
 import prisma from "../../../prisma/client";
 
-export async function getProduct(id: any, body: any) {
+export async function getProduct(id: any) {
   const product = await prisma.product.findUnique({ where: { id } });
 
   if (!product) {

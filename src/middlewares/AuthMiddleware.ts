@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import prisma from "../../prisma/client";
 
 export async function authenticate(
   request: Request,
@@ -24,7 +23,7 @@ export async function authenticate(
 
   const { id } = jwt.verify(token, accessToken) as JwtPayload;
 
-  (request as any).user = { id };
+  request.user = { id };
 
   next();
 }

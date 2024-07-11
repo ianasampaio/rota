@@ -1,6 +1,6 @@
 import prisma from "../../../prisma/client";
 
-export async function listProducts(bode: any) {
+export async function listProducts() {
   const products = await prisma.product.findMany();
 
   return {
