@@ -67,15 +67,20 @@ model Shipment {
   @@map("shipments")
 }
 
+enum ShipmentProductStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
 model ShipmentProduct {
-  id           String        @id @default(uuid()) @db.Uuid
-  shipmentId   String        @map("shipment_id") @db.Uuid
-  productId    String        @map("product_id") @db.Uuid
+  id           String                @id @default(uuid()) @db.Uuid
+  shipmentId   String                @map("shipment_id") @db.Uuid
+  productId    String                @map("product_id") @db.Uuid
   name         String
   value        Int
-  status       String
-  createdAt    DateTime      @map("created_at")
-  updatedAt    DateTime      @map("updated_at")
+  status       ShipmentProductStatus
+  createdAt    DateTime              @map("created_at")
+  updatedAt    DateTime              @map("updated_at")
   SaleProducts SaleProduct[]
 
   shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
@@ -84,13 +89,19 @@ model ShipmentProduct {
   @@map("shipment_products")
 }
 
+enum SaleStatus {
+  OPEN
+  PARTIALLY_PAID
+  PAID
+}
+
 model Sale {
   id           String        @id @default(uuid()) @db.Uuid
   clientId     String        @map("client_id") @db.Uuid
   userId       String        @map("user_id") @db.Uuid
   shipmentId   String?       @map("shipment_id") @db.Uuid
   value        Int
-  status       String
+  status       SaleStatus
   createdAt    DateTime      @map("created_at")
   updatedAt    DateTime      @map("updated_at")
   saleProducts SaleProduct[]
@@ -123,13 +134,19 @@ model SaleProduct {
   @@map("sale_products")
 }
 
+enum PaymentType {
+  CASH
+  PIX
+  CARD
+}
+
 model Payments {
-  id        String   @id @default(uuid()) @db.Uuid
-  saleId    String   @map("sale_id") @db.Uuid
-  type      String
+  id        String      @id @default(uuid()) @db.Uuid
+  saleId    String      @map("sale_id") @db.Uuid
+  type      PaymentType
   value     Int
-  createdAt DateTime @map("created_at")
-  updatedAt DateTime @map("updated_at")
+  createdAt DateTime    @map("created_at")
+  updatedAt DateTime    @map("updated_at")
 
   sale Sale @relation(fields: [saleId], references: [id], onDelete: Cascade)
 
