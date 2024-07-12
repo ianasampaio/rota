@@ -3,8 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export async function signin(payload: any) {
-  const { body } = payload;
-  const { email, password } = body;
+  const { email, password } = payload.body;
 
   const user = await prisma.user.findUnique({
     where: { email },
