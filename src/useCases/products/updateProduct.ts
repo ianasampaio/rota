@@ -1,25 +1,26 @@
 import prisma from "../../../prisma/client";
+import validateFields from "../../utils/validators/fieldValidator";
 
-export async function updateProduct(id: any, body: any) {
+export async function updateProduct(payload: any) {
+  const { body, params } = payload;
+  const { id } = params;
+
   const allowedFieldsToUpdate = ["name", "value"];
 
-  const fieldsNotAllowedForUpdate = Object.keys(body).some(
-    (key) => !allowedFieldsToUpdate.includes(key)
-  );
+  const validationError = validateFields(body, allowedFieldsToUpdate);
 
-  if (fieldsNotAllowedForUpdate) {
+  if (validationError) {
     return {
       data: {
-        error: "Some received field is not allowed",
+        error: validationError.error,
       },
       statusCode: 400,
     };
   }
+
   await prisma.product.update({
     where: { id },
-    data: {
-      ...body,
-    },
+    data: body,
   });
 
   return {

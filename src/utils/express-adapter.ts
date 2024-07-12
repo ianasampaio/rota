@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 
-type Handler = (body: any, id?: any) => Promise<any>;
+type Handler = (body: any) => Promise<any>;
 
 export const expressAdapter =
   (handler: Handler) => async (request: Request, response: Response) => {
@@ -13,11 +13,14 @@ export const expressAdapter =
 
     try {
       const { body } = request;
-      body.userId = request.user.id;
 
-      const { id } = request.params;
+      const payload = {
+        body,
+        params: request.params,
+        userId: request.user.id,
+      };
 
-      const output = id ? await handler(id, body) : await handler(body);
+      const output = await handler(payload);
       const { data, statusCode } = output;
 
       response.status(statusCode).json(data);

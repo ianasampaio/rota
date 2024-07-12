@@ -1,8 +1,13 @@
 import prisma from "../../../prisma/client";
 
-export async function createClient(body: any) {
+export async function createClient(payload: any) {
+  const { body, userId } = payload;
+
   const client = await prisma.client.create({
-    data: body,
+    data: {
+      ...body,
+      userId,
+    },
   });
 
   return {
