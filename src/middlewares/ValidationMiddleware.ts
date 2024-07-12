@@ -23,16 +23,16 @@ export const validateProduct = [
     .withMessage("Name must be provided")
     .isString()
     .withMessage("Name must be a string"),
-  body("price")
+  body("value")
     .notEmpty()
     .withMessage("Price must be provided")
-    .isDecimal()
-    .withMessage("Price must be a decimal"),
+    .isInt()
+    .withMessage("Price must be a integer"),
 ];
 
 export const validateProductToUpdate = [
   body("name").optional().isString().trim().escape(),
-  body("price").optional().isDecimal(),
+  body("value").optional().isInt(),
 ];
 
 export const validateClient = [

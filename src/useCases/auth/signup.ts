@@ -1,8 +1,8 @@
 import prisma from "../../../prisma/client";
 import bcrypt from "bcrypt";
 
-export async function signup(body: any) {
-  const { name, email, password } = body;
+export async function signup(payload: any) {
+  const { name, email, password } = payload.body;
 
   const userExists = await prisma.user.findUnique({
     where: { email },
