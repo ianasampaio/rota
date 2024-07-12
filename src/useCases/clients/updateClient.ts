@@ -2,7 +2,7 @@ import prisma from "../../../prisma/client";
 import validateFields from "../../utils/validators/fieldValidator";
 
 export async function updateClient(payload: any) {
-  const { body, params } = payload;
+  const { body, params, userId } = payload;
   const { id } = params;
 
   const allowedFieldsToUpdate = ["name", "adress", "contact"];
@@ -18,7 +18,7 @@ export async function updateClient(payload: any) {
     };
   }
   await prisma.client.update({
-    where: { id },
+    where: { id, userId },
     data: body,
   });
 

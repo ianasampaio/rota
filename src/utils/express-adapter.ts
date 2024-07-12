@@ -17,7 +17,7 @@ export const expressAdapter =
       const payload = {
         body,
         params: request.params,
-        userId: request.user.id,
+        userId: request.user && request.user.id ? request.user.id : null,
       };
 
       const output = await handler(payload);

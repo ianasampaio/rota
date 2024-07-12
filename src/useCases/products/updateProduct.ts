@@ -2,7 +2,7 @@ import prisma from "../../../prisma/client";
 import validateFields from "../../utils/validators/fieldValidator";
 
 export async function updateProduct(payload: any) {
-  const { body, params } = payload;
+  const { body, params, userId } = payload;
   const { id } = params;
 
   const allowedFieldsToUpdate = ["name", "value"];
@@ -19,7 +19,7 @@ export async function updateProduct(payload: any) {
   }
 
   await prisma.product.update({
-    where: { id },
+    where: { id, userId },
     data: body,
   });
 
