@@ -1,6 +1,6 @@
 import prisma from "../../../prisma/client";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import generateToken from "../../utils/token/generateToken";
 
 export async function signin(payload: any) {
   const { email, password } = payload.body;
@@ -28,29 +28,10 @@ export async function signin(payload: any) {
     };
   }
 
-  const accessToken = process.env.ACCESS_TOKEN_SECRET;
-  if (!accessToken) {
-    return {
-      data: {
-        error: "ACCESS_TOKEN_SECRET must be defined",
-      },
-      statusCode: 400,
-    };
-  }
-  const expiresIn = process.env.EXPIRE;
-
-  const token = jwt.sign(
-    {
-      id: user.id,
-    },
-    accessToken,
-    {
-      expiresIn: expiresIn,
-    }
-  );
+  const token = generateToken(user);
 
   return {
     data: token,
-    statusCode: 201,
+    statusCode: 200,
   };
 }
