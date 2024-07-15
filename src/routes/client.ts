@@ -6,9 +6,11 @@ import {
   validateClient,
   validateClientToUpdate,
 } from "../utils/validators/clients/clientValidator";
+import { listClient } from "../useCases/clients/listClient";
 
 const router = Router();
 
+router.get("/clients", expressAdapter(listClient));
 router.post("/clients", validateClient, expressAdapter(createClient));
 router.patch(
   "/clients/:id",
