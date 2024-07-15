@@ -1,11 +1,11 @@
 import { Router } from "express";
-import {
-  validateClient,
-  validateClientToUpdate,
-} from "../middlewares/ValidationMiddleware";
 import { createClient } from "../useCases/clients/createClient";
 import { updateClient } from "../useCases/clients/updateClient";
 import { expressAdapter } from "../utils/express-adapter";
+import {
+  validateClient,
+  validateClientToUpdate,
+} from "../utils/validators/clients/clientValidator";
 
 const router = Router();
 

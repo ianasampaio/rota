@@ -2,12 +2,12 @@ import { Router } from "express";
 import { listProducts } from "../useCases/products/listProducts";
 import { getProduct } from "../useCases/products/getProduct";
 import { createProduct } from "../useCases/products/createProduct";
+import { updateProduct } from "../useCases/products/updateProduct";
+import { expressAdapter } from "../utils/express-adapter";
 import {
   validateProduct,
   validateProductToUpdate,
-} from "../middlewares/ValidationMiddleware";
-import { updateProduct } from "../useCases/products/updateProduct";
-import { expressAdapter } from "../utils/express-adapter";
+} from "../utils/validators/products/productValidator";
 
 const router = Router();
 

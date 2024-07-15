@@ -1,17 +1,16 @@
 import { Router } from "express";
-import { listUsers } from "../useCases/users/listUsers";
 import { signup } from "../useCases/auth/signup";
 import { signin } from "../useCases/auth/signin";
-import {
-  validateUser,
-  validateLogin,
-} from "../middlewares/ValidationMiddleware";
+
 import { expressAdapter } from "../utils/express-adapter";
+import {
+  validateSignin,
+  validateSignup,
+} from "../utils/validators/auth/authValidator";
 
 const router = Router();
 
-router.get("/users", listUsers);
-router.post("/signup", validateUser, expressAdapter(signup));
-router.post("/signin", validateLogin, expressAdapter(signin));
+router.post("/signup", validateSignup, expressAdapter(signup));
+router.post("/signin", validateSignin, expressAdapter(signin));
 
 export default router;
