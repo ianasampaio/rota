@@ -1,5 +1,6 @@
 import prisma from "../../../prisma/client";
 import bcrypt from "bcrypt";
+import generateToken from "../../utils/token/generateToken";
 
 export async function signup(payload: any) {
   const { name, email, password } = payload.body;
@@ -27,8 +28,10 @@ export async function signup(payload: any) {
     },
   });
 
+  const token = generateToken(user);
+
   return {
-    data: user,
+    data: token,
     statusCode: 201,
   };
 }
