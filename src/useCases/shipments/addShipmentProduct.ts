@@ -1,4 +1,3 @@
-import { body } from "express-validator";
 import prisma from "../../../prisma/client";
 import { ShipmentProductStatus } from "@prisma/client";
 
