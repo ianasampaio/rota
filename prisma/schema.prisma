@@ -76,8 +76,8 @@ model ShipmentProduct {
   name         String
   value        Int
   status       ShipmentProductStatus
-  createdAt    DateTime              @map("created_at")
-  updatedAt    DateTime              @map("updated_at")
+  createdAt    DateTime              @default(now()) @map("created_at")
+  updatedAt    DateTime              @updatedAt @map("updated_at")
   saleProducts SaleProduct[]
 
   shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
