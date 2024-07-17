@@ -3,7 +3,7 @@ import AuthRouter from "./auth";
 import ProductRouter from "./product";
 import ClientRouter from "./client";
 import ShipmentRouter from "./shipment";
-import { authenticate } from "../middlewares/AuthMiddleware";
+import { authenticate } from "../middlewares/authMiddleware";
 
 const router = Router();
 
