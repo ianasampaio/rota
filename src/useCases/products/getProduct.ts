@@ -16,6 +16,6 @@ export async function getProduct(payload: any) {
   }
   return {
     data: product,
-    statusCode: 201,
+    statusCode: 200,
   };
 }

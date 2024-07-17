@@ -6,6 +6,6 @@ export async function listProducts(payload: any) {
 
   return {
     data: products,
-    statusCode: 201,
+    statusCode: 200,
   };
 }
