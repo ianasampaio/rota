@@ -10,3 +10,7 @@ export const validateShipmentProduct = z.object({
   value: z.number().int(),
   quantity: z.number().int(),
 });
+
+export const validateShipmentProductToDelete = z.object({
+  product_id: z.string(),
+});
