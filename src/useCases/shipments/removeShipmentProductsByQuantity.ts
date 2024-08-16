@@ -18,7 +18,7 @@ export async function removeShipmentProductsByQuantity(payload: any) {
   if (shipmentProducts.length === 0) {
     return {
       data: {
-        error: "Product not found",
+        error: "Product not available in this shipment",
       },
       statusCode: 400,
     };
