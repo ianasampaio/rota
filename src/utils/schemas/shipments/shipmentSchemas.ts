@@ -14,3 +14,8 @@ export const validateShipmentProduct = z.object({
 export const validateShipmentProductToDelete = z.object({
   product_id: z.string().uuid(),
 });
+
+export const validateShipmentProductToDeleteByQuantity = z.object({
+  product_id: z.string().uuid(),
+  quantity: z.number().int(),
+});
