@@ -14,8 +14,11 @@ import {
   validateShipmentProductToDelete,
   validateShipmentProductToDeleteByQuantity,
 } from "../utils/schemas/shipments/shipmentSchemas";
+import { listShipments } from "../useCases/shipments/listShipments";
 
 const router = Router();
+
+router.get("/shipments", expressAdapter(listShipments));
 
 router.post(
   "/shipments",
