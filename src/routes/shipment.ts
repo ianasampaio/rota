@@ -5,6 +5,8 @@ import { createShipment } from "../useCases/shipments/createShipment";
 import { addShipmentProduct } from "../useCases/shipments/addShipmentProduct";
 import { removeShipmentProduct } from "../useCases/shipments/removeShipmentProduct";
 import { removeShipmentProductsByQuantity } from "../useCases/shipments/removeShipmentProductsByQuantity";
+import { listShipments } from "../useCases/shipments/listShipments";
+import { getShipment } from "../useCases/shipments/getShipment";
 
 import { validateData } from "../middlewares/validationMiddleware";
 
@@ -14,11 +16,12 @@ import {
   validateShipmentProductToDelete,
   validateShipmentProductToDeleteByQuantity,
 } from "../utils/schemas/shipments/shipmentSchemas";
-import { listShipments } from "../useCases/shipments/listShipments";
 
 const router = Router();
 
 router.get("/shipments", expressAdapter(listShipments));
+
+router.get("/shipments/:id", expressAdapter(getShipment));
 
 router.post(
   "/shipments",
