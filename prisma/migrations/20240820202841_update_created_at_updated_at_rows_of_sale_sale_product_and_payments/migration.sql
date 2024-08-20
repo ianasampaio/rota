@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "payments" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP;
+
+-- AlterTable
+ALTER TABLE "sale_products" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP;
+
+-- AlterTable
+ALTER TABLE "sales" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP;
