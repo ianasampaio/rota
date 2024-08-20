@@ -50,10 +50,16 @@ model Client {
   @@map("clients")
 }
 
+enum ShipmentStatus {
+  OPEN
+  CLOSED
+}
+
 model Shipment {
   id               String            @id @default(uuid()) @db.Uuid
   userId           String            @map("user_id") @db.Uuid
   location         String
+  status           ShipmentStatus
   createdAt        DateTime          @default(now()) @map("created_at")
   updatedAt        DateTime          @updatedAt @map("updated_at")
   shipmentProducts ShipmentProduct[]
