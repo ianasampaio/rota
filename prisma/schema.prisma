@@ -76,15 +76,14 @@ enum ShipmentProductStatus {
 }
 
 model ShipmentProduct {
-  id           String                @id @default(uuid()) @db.Uuid
-  shipmentId   String                @map("shipment_id") @db.Uuid
-  productId    String                @map("product_id") @db.Uuid
-  name         String
-  value        Int
-  status       ShipmentProductStatus
-  createdAt    DateTime              @default(now()) @map("created_at")
-  updatedAt    DateTime              @updatedAt @map("updated_at")
-  saleProducts SaleProduct[]
+  id         String                @id @default(uuid()) @db.Uuid
+  shipmentId String                @map("shipment_id") @db.Uuid
+  productId  String                @map("product_id") @db.Uuid
+  name       String
+  value      Int
+  status     ShipmentProductStatus
+  createdAt  DateTime              @default(now()) @map("created_at")
+  updatedAt  DateTime              @updatedAt @map("updated_at")
 
   shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
   product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -105,8 +104,8 @@ model Sale {
   shipmentId   String?       @map("shipment_id") @db.Uuid
   value        Int
   status       SaleStatus
-  createdAt    DateTime      @map("created_at")
-  updatedAt    DateTime      @map("updated_at")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
   saleProducts SaleProduct[]
   payments     Payments[]
 
@@ -119,17 +118,15 @@ model Sale {
 }
 
 model SaleProduct {
-  id                String   @id @default(uuid()) @db.Uuid
-  saleId            String   @map("sale_id") @db.Uuid
-  productId         String   @map("product_id") @db.Uuid
-  shipmentProductId String?  @map("shipment_product_id") @db.Uuid
-  value             Int
-  createdAt         DateTime @map("created_at")
-  updatedAt         DateTime @map("updated_at")
+  id        String   @id @default(uuid()) @db.Uuid
+  saleId    String   @map("sale_id") @db.Uuid
+  productId String   @map("product_id") @db.Uuid
+  value     Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  sale            Sale             @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  product         Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
-  shipmentProduct ShipmentProduct? @relation(fields: [shipmentProductId], references: [id], onDelete: Cascade)
+  sale    Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@map("sale_products")
 }
@@ -145,8 +142,8 @@ model Payments {
   saleId    String      @map("sale_id") @db.Uuid
   type      PaymentType
   value     Int
-  createdAt DateTime    @map("created_at")
-  updatedAt DateTime    @map("updated_at")
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
 
   sale Sale @relation(fields: [saleId], references: [id], onDelete: Cascade)
 
