@@ -66,19 +66,27 @@ export async function createSale(payload:any) {
     data: saleData,
   });
 
-  const saleProducts = saleProductsEntries.flatMap((product) =>
-    Array.from({ length: product.quantity }, () => ({
+  const saleProducts = saleProductsEntries.reduce((accumulator, product) => {
+    const totalValue = product.quantity * product.value;
+    const newProduct = {
       saleId: sale.id,
       productId: product.product_id,
-      value: product.value,
-    }))
-  );
+      total: totalValue,
+      quantity: product.quantity,
+    }
+    accumulator.push({ ...newProduct });
+    return accumulator;
+  }, []);
+
   const products = await prisma.saleProduct.createMany({
     data: saleProducts,
   });
 
   return {
-    data: {sale, products},
+    data: {
+      sale,
+      products,
+    },
     statusCode: 201,
   };
 }
