@@ -14,3 +14,11 @@ export const validateSale = z.object({
     quantity: z.number().int(),
   })),
 });
+
+export const validatePayment = z.object({
+  payment: z
+  .object({
+    type: z.string(),
+    value: z.number().int(),
+  }),
+});
