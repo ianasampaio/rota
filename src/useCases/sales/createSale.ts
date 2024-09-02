@@ -64,6 +64,14 @@ export async function createSale(payload:any) {
 
   const sale = await prisma.sale.create({
     data: saleData,
+    include: {
+      payments: {
+        select: {
+          value: true,
+          type:true,
+        }
+      },
+    }
   });
 
   const saleProducts = saleProductsEntries.reduce((accumulator, product) => {
@@ -78,15 +86,41 @@ export async function createSale(payload:any) {
     return accumulator;
   }, []);
 
-  const products = await prisma.saleProduct.createMany({
+  await prisma.saleProduct.createMany({
     data: saleProducts,
   });
 
-  return {
-    data: {
-      sale,
-      products,
+  const dataProducts = await prisma.saleProduct.findMany({
+    where: {
+      saleId: sale.id,
     },
+    select: {
+      quantity: true,
+      total: true,
+      product: {
+        select: {
+          name: true,
+        },
+      },
+    }
+  });
+
+  const products = dataProducts.map((product) => ({
+    quantity: product.quantity,
+    total: product.total,
+    name: product.product.name
+  }))
+
+  const paidValue = payment? payment.value : undefined;
+
+  const data = {
+    ...sale,
+    paidValue,
+    products,
+  }
+
+  return {
+    data,
     statusCode: 201,
   };
 }
