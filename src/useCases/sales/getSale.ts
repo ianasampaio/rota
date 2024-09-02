@@ -20,6 +20,12 @@ export async function getSale(payload:any) {
           },
         }
       },
+      payments: {
+        select: {
+          value: true,
+          type:true,
+        }
+      },
     },
   });
 
@@ -32,6 +38,11 @@ export async function getSale(payload:any) {
     };
   }
 
+  const paidValue = sale.payments.reduce((accumulator, {value}) => {
+    return accumulator + value;
+  }, 0);
+
+
   const saleProducts = sale.saleProducts.map((product) => ({
     quantity: product.quantity,
     total: product.total,
@@ -40,6 +51,7 @@ export async function getSale(payload:any) {
 
   const data = {
     ...sale,
+    paidValue,
     saleProducts
   }
 
