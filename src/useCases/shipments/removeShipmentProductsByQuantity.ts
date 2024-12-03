@@ -1,8 +1,33 @@
+import { ShipmentStatus } from "@prisma/client";
 import prisma from "../../../prisma/client";
 
 export async function removeShipmentProductsByQuantity(payload: any) {
   const { product_id, quantity } = payload.body;
-  const { id } = payload.params;
+  const { id, userId } = payload.params;
+
+  const shipment = await prisma.shipment.findUnique({
+    where: {
+      id, userId
+    },
+  });
+
+  if (!shipment) {
+    return {
+      data: {
+        error: "Shipment not found",
+      },
+      statusCode: 400,
+    };
+  }
+
+  if (shipment.status === ShipmentStatus.CLOSED) {
+    return {
+      data: {
+        error: "Shipment closed",
+      },
+      statusCode: 400,
+    };
+  }
 
   const shipmentProducts = await prisma.shipmentProduct.findMany({
     where: {

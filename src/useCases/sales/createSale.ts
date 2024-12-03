@@ -1,5 +1,5 @@
 import prisma from "../../../prisma/client";
-import { SaleStatus } from "@prisma/client";
+import { SaleStatus, ShipmentStatus } from "@prisma/client";
 
 type Product = {
   product_id: string;
@@ -9,6 +9,34 @@ type Product = {
 export async function createSale(payload:any) {
   const { userId } = payload;
   const { client_id, shipment_id, payment, sale_products } = payload.body;
+
+  const shipment = await prisma.shipment.findUnique({
+    where: {
+      id: shipment_id,
+      userId,
+    },
+    select: {
+      status: true,
+    }
+  });
+
+  if (!shipment) {
+    return {
+      data: {
+        error: "Shipment not found",
+      },
+      statusCode: 400,
+    };
+  }
+
+  if (shipment.status === ShipmentStatus.CLOSED) {
+    return {
+      data: {
+        error: "Shipment already closed",
+      },
+      statusCode: 400,
+    };
+  }
 
   const saleProductsEntries = await Promise.all(
     sale_products.map(async (product:Product) => {

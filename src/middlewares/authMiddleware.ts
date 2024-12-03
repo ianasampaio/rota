@@ -21,9 +21,16 @@ export async function authenticate(
       .json({ error: "ACCESS_TOKEN_SECRET must be defined" });
   }
 
-  const { id } = jwt.verify(token, accessToken) as JwtPayload;
+  try {
+    const { id } = jwt.verify(token, accessToken) as JwtPayload;
 
-  request.user = { id };
+    request.user = { id };
+
+  } catch (error) {
+    return response
+      .status(400)
+      .json({ error });
+  }
 
   next();
 }
