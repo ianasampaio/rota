@@ -12,6 +12,8 @@ export async function createShipment(payload: any) {
       location,
       status,
       userId,
+      baseValue: 0,
+      saleValue:0,
     },
   });
 

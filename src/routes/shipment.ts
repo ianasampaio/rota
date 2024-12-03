@@ -16,6 +16,7 @@ import {
   validateShipmentProductToDelete,
   validateShipmentProductToDeleteByQuantity,
 } from "../utils/schemas/shipments/shipmentSchemas";
+import { closeShipment } from "../useCases/shipments/closeShipment";
 
 const router = Router();
 
@@ -43,5 +44,10 @@ router.delete(
   "/shipments/:id/products-by-quantity",
   validateData(validateShipmentProductToDeleteByQuantity),
   expressAdapter(removeShipmentProductsByQuantity)
+);
+
+router.patch(
+  "/close-shipment/:id",
+  expressAdapter(closeShipment)
 );
 export default router;
